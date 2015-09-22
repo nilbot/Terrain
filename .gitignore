@@ -9,6 +9,9 @@
 /test/version_tmp/
 /tmp/
 
+## Ignoring Terrain file
+terrain.dat
+
 ## Specific to RubyMine
 .idea/
 
