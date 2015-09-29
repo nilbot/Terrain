@@ -28,5 +28,32 @@ class TerrainAnalyser
     end
     min
   end
+
+  def mean
+    sum = 0.0
+    cnt = 0
+    @terrain.each_index do |i|
+      column = @terrain[i]
+      column.each_index do |j|
+        sum+=@terrain[i][j]
+        cnt+=1
+      end
+    end
+    sum/cnt
+  end
+
+  def sd
+    mu = mean()
+    dist = 0.0
+    cnt = 0
+    @terrain.each_index do |i|
+      column = @terrain[i]
+      column.each_index do |j|
+        dist += (@terrain[i][j] - mu)**2
+        cnt+=1
+      end
+    end
+    Math.sqrt(dist / cnt)
+  end
 end
 
