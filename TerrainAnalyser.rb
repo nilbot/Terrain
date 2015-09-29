@@ -10,7 +10,7 @@ class TerrainAnalyser
       data = line.split
       j = 0
       sub_terrain = []
-      while j != counter - 1
+      while j != counter
         sub_terrain.push(data[j].to_i)
         j+=1
       end
