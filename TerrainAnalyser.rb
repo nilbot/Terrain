@@ -18,7 +18,7 @@ class TerrainAnalyser
     end
   end
   attr_reader :terrain
-  def get_valley
+  def minimum
     min = (2**(0.size * 8 -2) -1) # min := max_int
     @terrain.each_index do |i|
       subarray = @terrain[i]
