@@ -21,10 +21,19 @@ class TerrainAnalyserTest < Test::Unit::TestCase
   end
 
   def test_initialize
-    assert_equal(10, @ta.terrain.length, 'init failed, array differ in length')
+    assert_equal(10, @ta.terrain.length, 'init failed, array row differ in length')
+    assert_equal(10, @ta.terrain[0].length, 'init failed, array col differ in length')
   end
 
   def test_find_lowest
-    assert_equal(0,@ta.get_valley, "expected 0, but got #{@ta.get_valley}")
+    assert_equal(0,@ta.minimum, "expected 0, but got #{@ta.minimum}")
+  end
+
+  def test_find_average
+    assert_equal(4.14,@ta.mean, "expected 4.14, but got #{@ta.mean}")
+  end
+
+  def test_std
+    assert_equal(2.745133, @ta.sd, "expected 2.745133, but got #{@ta.sd}")
   end
 end
