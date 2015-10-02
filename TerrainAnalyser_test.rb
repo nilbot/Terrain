@@ -28,8 +28,8 @@ class TerrainAnalyserTest < Test::Unit::TestCase
 
   def test_find_lowest
     @ta.minimum
-    assert_equal(0,@ta.min, "expected 0, but got #{@ta.minimum}")
-    assert_equal(Coordinate.new(0,0,5).to_s,@ta.min_coordinates.to_s,"expected 0 at (0,5), but got #{@ta.min_coordinates}")
+    assert_equal(0,@ta.min, "expected 0, but got #{@ta.min}")
+    assert_equal(Coordinate.new(0,0,5),@ta.min_coordinates,"expected 0 at (0,5), but got #{@ta.min_coordinates}")
   end
 
   def test_find_average
