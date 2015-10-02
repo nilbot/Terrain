@@ -63,5 +63,10 @@ class TerrainAnalyser
     end
     Math.sqrt(dist / cnt)
   end
+
+  attr_reader :largest_pool
+  def find_largest_pool
+    @largest_pool = Pool.new(Coordinate.new(0,6,7),0,3,3)
+  end
 end
 

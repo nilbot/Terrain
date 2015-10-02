@@ -1,6 +1,7 @@
 require 'test/unit'
 require_relative 'terrain_analyser'
 require_relative 'coordinate'
+require_relative 'pool'
 class TerrainAnalyserTest < Test::Unit::TestCase
   def setup
     test_trivial_file = File.open('terrain.dat','w')
@@ -38,5 +39,23 @@ class TerrainAnalyserTest < Test::Unit::TestCase
 
   def test_std
     assert_equal(2.731373280970581, @ta.sd, "expected 2.731373280970581, but got #{@ta.sd}")
+  end
+
+  def test_find_largest_pool
+    rect = [
+        Coordinate.new(0,6,7),
+        Coordinate.new(0,8,9)
+    ]
+    expect = []
+    expect[0] = rect
+    expect[1] = 0
+    width = 3
+    height = 3
+    @ta.find_largest_pool
+    assert_equal(width, @ta.largest_pool.width, "expected width = 3, but was #{@ta.largest_pool.width}")
+    assert_equal(height, @ta.largest_pool.height, "expected height = 3, but was #{@ta.largest_pool.height}")
+    assert_equal(expect[1],@ta.largest_pool.depth, "expected depth = 0, but was #{@ta.largest_pool.depth}")
+    assert_equal(expect[0][0],@ta.largest_pool.starts_at, "expected starts at (6,7), but was #{@ta.largest_pool.starts_at}")
+    assert_equal(expect[0][1],@ta.largest_pool.ends_at, "expected ends at (8,9), but was #{@ta.largest_pool.ends_at}")
   end
 end
