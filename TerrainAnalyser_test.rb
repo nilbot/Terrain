@@ -34,6 +34,6 @@ class TerrainAnalyserTest < Test::Unit::TestCase
   end
 
   def test_std
-    assert_equal(2.745133, @ta.sd, "expected 2.745133, but got #{@ta.sd}")
+    assert_equal(2.731373280970581, @ta.sd, "expected 2.731373280970581, but got #{@ta.sd}")
   end
 end
