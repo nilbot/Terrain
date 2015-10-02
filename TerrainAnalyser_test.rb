@@ -1,5 +1,6 @@
 require 'test/unit'
 require_relative 'TerrainAnalyser'
+require_relative 'Coordinate'
 class TerrainAnalyserTest < Test::Unit::TestCase
   def setup
     test_trivial_file = File.open('terrain.dat','w')
@@ -26,7 +27,9 @@ class TerrainAnalyserTest < Test::Unit::TestCase
   end
 
   def test_find_lowest
-    assert_equal(0,@ta.minimum, "expected 0, but got #{@ta.minimum}")
+    @ta.minimum
+    assert_equal(0,@ta.min, "expected 0, but got #{@ta.minimum}")
+    assert_equal(Coordinate.new(0,0,5).to_s,@ta.min_coordinates.to_s,"expected 0 at (0,5), but got #{@ta.min_coordinates}")
   end
 
   def test_find_average
