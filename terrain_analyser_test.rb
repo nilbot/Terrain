@@ -1,6 +1,6 @@
 require 'test/unit'
-require_relative 'TerrainAnalyser'
-require_relative 'Coordinate'
+require_relative 'terrain_analyser'
+require_relative 'coordinate'
 class TerrainAnalyserTest < Test::Unit::TestCase
   def setup
     test_trivial_file = File.open('terrain.dat','w')

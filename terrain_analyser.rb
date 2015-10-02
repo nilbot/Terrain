@@ -1,4 +1,4 @@
-require_relative 'Coordinate'
+require_relative 'coordinate'
 class TerrainAnalyser
   def initialize
     @terrain = []
