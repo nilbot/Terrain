@@ -1,3 +1,4 @@
+require_relative 'coordinate'
 class TerrainAnalyser
   def initialize
     @terrain = []
@@ -18,15 +19,22 @@ class TerrainAnalyser
     end
   end
   attr_reader :terrain
+  attr_reader :min
+  attr_reader :min_coordinates
   def minimum
-    min = (2**(0.size * 8 -2) -1) # min := max_int
-    @terrain.each_index do |i|
-      subarray = @terrain[i]
-      subarray.each_index do |j|
-        min = @terrain[i][j] if min > @terrain[i][j]
+    min = (2**(0.size*8 -2)-1)
+    coord = Hash.new
+    0.upto(@terrain.size-1) do |i|
+      0.upto(@terrain[i].size-1) do |j|
+        if min > @terrain[i][j]
+          min = @terrain[i][j]
+          coord[min] = Coordinate.new(min,i,j)
+        end
       end
     end
-    min
+    @min = min
+    @min_coordinates = coord[min]
+    @min_coordinates
   end
 
   def mean
