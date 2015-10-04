@@ -1,9 +1,7 @@
-# 1_15204230
-Ni Ersi
-
+Ni, Ersi
 15204230
 
-my program works correctly, and I insist on using *(row,col)* index notation 
+my program works correctly, and I insist on using (row,col) indexing notation 
 in my results.
 
 My program computes largest pool in O(n), I used a modified version of my own
