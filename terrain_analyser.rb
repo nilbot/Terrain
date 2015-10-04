@@ -108,13 +108,13 @@ class TerrainAnalyser
     # The qualified pool anchor is then at (i-count+1,j-count+1), with dimension=count.
     # Qualified pool is then pushed into a max heap
     max_heap = MaxHeap.new
+    best_so_far = 1 # best pool so far
     0.upto(n) {
       |j|
       jobs = []
       0.upto(n) {
         |i|
         vc = aux_array[i][j]
-        if !(jobs.empty?) # if jobs is not empty, process jobs first
           work_load = jobs.count
           pointer = 0
           1.upto(work_load) {
@@ -126,6 +126,7 @@ class TerrainAnalyser
                   # qualified a pool with job.height
                   qualified_pool = Pool.new(Coordinate.new(job.value,i-job.height+1,j-job.height+1),job.value,job.height)
                   max_heap.push(qualified_pool)
+                  best_so_far = max_heap.peek.dimension if !max_heap.peek.equal?(nil)
                   # finished remove this job from the queue, pointer remains
                   jobs.shift()
                 else
@@ -139,8 +140,7 @@ class TerrainAnalyser
               jobs.shift() # value not equal, remove and next
             end
           }
-        end
-        jobs.push(vc) if vc.height != 1
+        jobs.push(vc) if vc.height!=1 && best_so_far <= vc.height
       }
     }
     # O(n) + O(n) = O(n)
