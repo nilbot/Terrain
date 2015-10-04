@@ -1,20 +1,36 @@
 require_relative 'coordinate'
 class Pool
+  include Comparable
   @depth
-  @width
-  @height
+  @dimension
   @starts_at
   @ends_at
-  def initialize(leftmost, depth, m, n)
+  def initialize(leftmost, depth, dim)
     @depth = depth
-    @width = m
-    @height = n
+    @dimension = dim
     @starts_at = leftmost
-    @ends_at = Coordinate.new(leftmost.Value,leftmost.X + m - 1, leftmost.Y + n - 1)
+    @ends_at = Coordinate.new(leftmost.value,leftmost.x + dim - 1, leftmost.y + dim - 1)
   end
   attr_reader :depth
-  attr_reader :width
-  attr_reader :height
+  attr_reader :dimension
   attr_reader :starts_at
   attr_reader :ends_at
+  def <=>(other)
+    if @dimension < other.dimension
+      -1
+    elsif @dimension > other.dimension
+      1
+    elsif @dimension == other.dimension # we want small depth
+      if @depth < other.depth
+        1
+      elsif @depth > other.depth
+        -1
+      elsif @depth == other.depth
+        0
+      end
+    end
+  end
+  def to_s
+    "at (#{@starts_at.x}, #{@starts_at.y}) there's a #{@dimension}x#{@dimension} pool of height #{@depth}."
+  end
 end
