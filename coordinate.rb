@@ -1,19 +1,19 @@
 class Coordinate
-  @X
-  @Y
-  @Value
-  attr_reader :X
-  attr_reader :Y
-  attr_reader :Value
+  @x
+  @y
+  @value
+  attr_reader :x
+  attr_reader :y
+  attr_reader :value
   def initialize(value,x,y)
-    @X = x
-    @Y = y
-    @Value = value
+    @x = x
+    @y = y
+    @value = value
   end
   def to_s
-    "#{@Value}. Occurs at (#{@X},#{@Y})."
+    "#{@value}. Occurs at (#{@x},#{@y})."
   end
   def ==(other)
-    @X == other.X && @Y == other.Y && @Value == other.Value
+    @x == other.x && @y == other.y && @value == other.value
   end
 end

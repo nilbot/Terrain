@@ -1,4 +1,7 @@
 require_relative 'coordinate'
+require_relative 'value_consecutive_count'
+require_relative 'max_heap'
+require_relative 'pool'
 class TerrainAnalyser
   def initialize
     @terrain = []
@@ -22,7 +25,7 @@ class TerrainAnalyser
   attr_reader :min
   attr_reader :min_coordinates
   def minimum
-    min = (2**(0.size*8 -2)-1)
+    min = (2**(0.size*8-2)-1)
     coord = Hash.new
     0.upto(@terrain.size-1) do |i|
       0.upto(@terrain[i].size-1) do |j|
@@ -66,7 +69,82 @@ class TerrainAnalyser
 
   attr_reader :largest_pool
   def find_largest_pool
-    @largest_pool = Pool.new(Coordinate.new(0,6,7),0,3,3)
+    # @largest_pool = Pool.new(Coordinate.new(0,6,7),0,3)
+    @largest_pool = largest_pool_by_histogram
+  end
+
+  private
+  def largest_pool_by_histogram
+    # scan through NxN -> O(n) once
+    # first scan gains us the information of (value, consecutive_count) at (i,j)
+    aux_array = []
+    last_value = -1
+    last_count = 1
+    n = @terrain.size-1
+    0.upto(n) { |i|
+      sub_array = []
+      0.upto(n) { |j|
+        value = @terrain[i][j]
+        if last_value == value
+          last_count+=1
+        else
+          # if last_value != value
+          last_count = 1
+          last_value = value
+        end
+        sub_array.push(ValueConsecutiveCount.new(value,last_count))
+      }
+      aux_array.push(sub_array)
+    }
+
+    # scan through aux_array by column, scan from top to bottom of counts that
+    # is not 1, and see if they connect; i.e: to qualify a 2x2 pool, the scan
+    # needs to see (i,j) with count 2 and (i+1,j) with count 2 && they share
+    # the same value. The check must also not rule out ascending check_tasks.
+    # Basically, the check simulates the largest area in histogram challenge
+    # from <a href="http://www.informatik.uni-ulm.de/acm/Locals/2003/html/histogram.html">ACM 2003</a>.
+    # Only we need squares rather than all rectangles. So it should be easier.
+    # Amortised O(n) because each element will at most be added once to job stack.
+    # The qualified pool anchor is then at (i-count+1,j-count+1), with dimension=count.
+    # Qualified pool is then pushed into a max heap
+    max_heap = MaxHeap.new
+    0.upto(n) {
+      |j|
+      jobs = []
+      0.upto(n) {
+        |i|
+        vc = aux_array[i][j]
+        if !(jobs.empty?) # if jobs is not empty, process jobs first
+          work_load = jobs.count
+          pointer = 0
+          1.upto(work_load) {
+            job = jobs[pointer]
+            if job.value == vc.value
+              if job.height <= vc.height # include plateau and hill climbing
+                job.count-=1
+                if job.count == 1
+                  # qualified a pool with job.height
+                  qualified_pool = Pool.new(Coordinate.new(job.value,i-job.height+1,j-job.height+1),job.value,job.height)
+                  max_heap.push(qualified_pool)
+                  # finished remove this job from the queue, pointer remains
+                  jobs.shift()
+                else
+                  pointer+=1 # proceed to next job
+                end
+              else # job.height > vc.height
+                # directly ignore and remove this job because it serves no one
+                jobs.shift()
+              end
+            else
+              jobs.shift() # value not equal, remove and next
+            end
+          }
+        end
+        jobs.push(vc) if vc.height != 1
+      }
+    }
+    # O(n) + O(n) = O(n)
+    max_heap.pop()
   end
 end
 
