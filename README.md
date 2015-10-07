@@ -1,7 +1,7 @@
 # Largest Plateau in Terrain Grid
 
 ## Problem statement
-Given a square Terrain grid, the value of each cell indicates the height of that cell. Find largest plateau in the Terrain.
+Given a square Terrain grid, the value of each cell indicates the height of that cell. Find largest plateau in the Terrain. Terrains with same dimension will compete with height. In our case, we want lower plateau.
 
 ## Input generation
 source the `R` code to generate matrix, first argument is dimension of the square, second is the max height you want to specify. The generated height will range from `0:dim` uniformly.
